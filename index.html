@@ -27,8 +27,6 @@
       padding: 20px;
     }
 
-
-
     header {
       text-align: center;
       padding: 30px 0;
@@ -243,14 +241,14 @@
       .timeline-layout {
         flex-direction: column;
       }
-      
+
       .timeline-right {
         width: 100%;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
       }
-      
+
       .timeline-photo {
         width: 45%;
       }
@@ -379,15 +377,21 @@
       flex-wrap: wrap;
     }
 
+    /* 核心修改：调整音乐跳转按钮样式 */
     .song-link {
       display: inline-block;
-      padding: 8px 16px;
+      padding: 8px 12px; /* 减少左右内边距，缩短按钮长度 */
       background: linear-gradient(135deg, #6bb392 0%, #4a9e7d 100%);
       color: white;
       text-decoration: none;
       border-radius: 5px;
       font-size: 14px;
       transition: all 0.3s ease;
+      max-width: 120px; /* 限制最大宽度 */
+      text-align: center; /* 文字居中 */
+      white-space: nowrap; /* 防止文字换行 */
+      overflow: hidden; /* 防止内容溢出 */
+      text-overflow: ellipsis; /* 超长时显示省略号（可选） */
     }
 
     .song-link:hover {
@@ -573,7 +577,7 @@
   <div id="works" class="tab-content">
     <div class="intro-content">
       <p style="font-size: 20px; margin-bottom: 20px;"><strong>个人单曲：</strong></p>
-      
+
       <div class="song-item">
         <div class="song-title">《银河邮差》 2024.05.16全平台上线</div>
         <div class="song-links">
@@ -646,18 +650,18 @@
   <div id="messages" class="tab-content">
     <div class="intro-content">
       <h2 style="color: #6bb392; margin-bottom: 30px; text-align: center;">留言板</h2>
-      
+
       <div class="message-form">
         <div class="form-group">
           <label for="userName">姓名：</label>
           <input type="text" id="userName" placeholder="请输入您的姓名">
         </div>
-        
+
         <div class="form-group">
           <label for="userMessage">留言：</label>
           <textarea id="userMessage" placeholder="请输入您的留言内容..."></textarea>
         </div>
-        
+
         <button class="submit-btn" onclick="submitMessage()">提交留言</button>
       </div>
 
@@ -669,27 +673,24 @@
       </div>
     </div>
   </div>
-
-
 </div>
 
 <script>
-
   // 标签页切换功能
   function showTab(tabId, navItem) {
     // 隐藏所有内容
     document.querySelectorAll('.tab-content').forEach(content => {
       content.classList.remove('active');
     });
-    
+
     // 移除所有导航项的激活状态
     document.querySelectorAll('.nav-item').forEach(item => {
       item.classList.remove('active');
     });
-    
+
     // 显示选中的内容
     document.getElementById(tabId).classList.add('active');
-    
+
     // 激活选中的导航项
     navItem.classList.add('active');
   }
@@ -700,42 +701,42 @@
   function submitMessage() {
     const nameInput = document.getElementById('userName');
     const messageInput = document.getElementById('userMessage');
-    
+
     const name = nameInput.value.trim();
     const message = messageInput.value.trim();
-    
+
     if (!name || !message) {
       alert('请填写姓名和留言内容！');
       return;
     }
-    
+
     const newMessage = {
       name: name,
       content: message,
       time: new Date().toLocaleString('zh-CN')
     };
-    
+
     messages.unshift(newMessage);
     localStorage.setItem('messages', JSON.stringify(messages));
-    
+
     // 清空输入框
     nameInput.value = '';
     messageInput.value = '';
-    
+
     // 刷新留言列表
     displayMessages();
-    
+
     alert('留言提交成功！');
   }
 
   function displayMessages() {
     const container = document.getElementById('messageContainer');
-    
+
     if (messages.length === 0) {
       container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">暂无留言，快来留下第一条留言吧！</p>';
       return;
     }
-    
+
     container.innerHTML = messages.map(msg => `
       <div class="message-item">
         <div class="message-header">
